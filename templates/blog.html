@@ -1,9 +1,0 @@
-{% extends "base_template.html" %}
-{% block title %}Blog{% endblock %}
-
-{% block content %}
-    {% for post in posts %}
-        {% include "posts/"+post %}
-    {% endfor %}
-{% endblock %}
-

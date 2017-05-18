@@ -1,0 +1,16 @@
+{% extends "base_template.html" %}
+{% block title %}Blog Post Creator{% endblock %}
+
+{% block content %}
+<form class="form col-sm-10 col-sm-offset-1" method="post">
+    <div class="form-group">
+        <label for="title">Post Title</label>
+        <input type="text" class="form-control" name="title">
+    </div>
+    <div class="form-group">
+        <label for="title">Post Content</label>
+        <textarea type="text" class="form-control" name="content"></textarea>
+    </div>
+    <button class="btn btn-primary">Create Post</button>
+</form>
+{% endblock %}

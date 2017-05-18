@@ -1,15 +1,12 @@
-import os
-
-from flask import Flask, render_template, redirect
-from blueprints.blueprint_blog import blog_page
+from flask import Flask, render_template, redirect, url_for
+from blueprints.blog.blueprint_blog import blueprint_blog
 
 app = Flask(__name__)
-app.register_blueprint(blog_page)
+app.register_blueprint(blueprint_blog)
 
 @app.route('/')
 def default():
-    return redirect(url_for('blog', num_per_page=1, page=0))
-    return render_template("index.html")
+    return redirect(url_for('blog.view_blog', num_per_page=1, page=0))
 
 @app.route('/special')
 def special_creator():
