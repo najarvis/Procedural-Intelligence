@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask import Blueprint, render_template, request
 
 blueprint_blog = Blueprint('blog', __name__, template_folder='templates')
@@ -11,6 +12,7 @@ def view_blog(num_per_page=5, page=0):
 
 @blueprint_blog.route('/create_post', methods=['GET', 'POST'])
 def post_creator():
+    # TODO: Security / Sessions
     
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])
@@ -18,16 +20,27 @@ def post_creator():
     return render_template("post_creator.html")
 
 def add_post(title: str, text: str):
+    """Create a post-*.html file and save it based on input fields."""
+
     posts_nums = sorted([int(i.split('.html')[0].split('-')[-1]) for i in os.listdir(blueprint_blog.root_path+"/templates/posts/")])
-    new_post_num = int(posts_nums[-1]) + 1
-    print(posts_nums)
+    new_post_num = int(posts_nums[-1]) + 1 # Grab the highest post number and add one to it. It will be the number for the new post.
+
+    # Create a string for the date
+    d = datetime.datetime.now()
+    date_string = "Posted on: {m}/{d}/{y}".format(m=d.month, d=d.day, y=d.year)
 
     with open(blueprint_blog.root_path+"/templates/posts/post-"+str(new_post_num)+'.html', 'w') as f:
         paragraphs = text.split('\n')
-        final_text = '<h2 class="blog-post-title">'+title+'</h2>'
+        
+        # Add in the title and date
+        final_text = '<h2 class="blog-post-title">' + title + '</h2>'
+        final_text += '<p class="blog-post-meta">' + date_string + '</p>' 
+
+        # Add in all the paragraphs
         final_text += '<p>'
         final_text += '</p><p>'.join(paragraphs)
         final_text += '</p>'
+        
         f.write(final_text)
 
 
