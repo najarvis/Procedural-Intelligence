@@ -6,7 +6,7 @@ app.register_blueprint(blueprint_blog)
 
 @app.route('/')
 def default():
-    return redirect(url_for('blog.view_blog', num_per_page=1, page=0))
+    return redirect(url_for('blog.view_blog', num_per_page=3, page=0))
 
 @app.route('/special')
 def special_creator():

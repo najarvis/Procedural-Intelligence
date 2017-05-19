@@ -34,9 +34,19 @@ a {
 	color: #5b9279;
 }
 
+.Title {
+    color: #12130f;
+    text-decoration: none;
+}
+
+.Title:hover {
+    color: #12130f;
+    text-decoration: none;
+}
+
 body {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  color: #12130f;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    color: #12130f;
 }
 
 h1, .h1,

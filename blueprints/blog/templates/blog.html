@@ -4,6 +4,17 @@
 {% block content %}
     {% for post in posts %}
         {% include "posts/"+post %}
+        <br>
     {% endfor %}
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-3">
+        {% if page_num > 0 %}
+            <a href='/blog/{{ per_page }}/{{ page_num - per_page}}'><span class="glyphicon glyphicon-chevron-left"></span></a>
+        {% endif %}
+        </div>
+        <div class="col-sm-2 col-sm-offset-2">
+            <a href='/blog/{{ per_page }}/{{ page_num + per_page}}'><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+    </div>
 {% endblock %}
 
