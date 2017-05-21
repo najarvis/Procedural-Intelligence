@@ -16,6 +16,7 @@ def post_creator():
     
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])
+        return render_template(url_for("view_blog", num_per_page=3, page=0))
 
     return render_template("post_creator.html")
 
