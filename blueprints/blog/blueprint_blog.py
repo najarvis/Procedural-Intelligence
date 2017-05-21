@@ -1,6 +1,6 @@
 import os
 import datetime
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session, url_for, redirect
 
 blueprint_blog = Blueprint('blog', __name__, template_folder='templates')
 
@@ -12,7 +12,8 @@ def view_blog(num_per_page=5, page=0):
 
 @blueprint_blog.route('/create_post', methods=['GET', 'POST'])
 def post_creator():
-    # TODO: Security / Sessions
+    if 'user' not in session:
+        return redirect(url_for('login.view_login'))
     
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])

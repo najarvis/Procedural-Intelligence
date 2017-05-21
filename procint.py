@@ -1,8 +1,14 @@
-from flask import Flask, render_template, redirect, url_for
+import os
+from flask import Flask, render_template, redirect, url_for, session
+
 from blueprints.blog.blueprint_blog import blueprint_blog
+from blueprints.login.blueprint_login import blueprint_login
 
 app = Flask(__name__)
+app.secret_key = os.environ['SECRET_KEY']
+
 app.register_blueprint(blueprint_blog)
+app.register_blueprint(blueprint_login)
 
 @app.route('/')
 def default():
