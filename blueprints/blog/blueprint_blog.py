@@ -21,14 +21,22 @@ def post_creator():
  
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])
-        return render_template(url_for("view_blog", num_per_page=1, page=0))
+        return redirect(url_for("blog.view_blog"))
 
     return render_template("post_creator.html")
+
+@blueprint_blog.route('/delete_post', methods=['POST'])
+def post_deleter():
+    if 'user' not in session:
+        return redirect(url_for('login.view_login'))
+
+    remove_post(request.form['post_title'])
+    return redirect(url_for("blog.view_blog"))
 
 def add_post(title: str, text: str):
     """Create a post-*.html file and save it based on input fields."""
 
-    posts_nums = sorted([int(i.split('.html')[0].split('-')[-1]) for i in os.listdir(blueprint_blog.root_path+"/templates/posts/")])
+    posts_nums = get_posts_nums()
     new_post_num = int(posts_nums[-1]) + 1 # Grab the highest post number and add one to it. It will be the number for the new post.
 
     # Create a string for the date
@@ -48,6 +56,21 @@ def add_post(title: str, text: str):
         final_text += '</p>'
         
         f.write(final_text)
+
+def remove_post(title: str):
+    """Searches for a post with the supplied title and deletes it if it finds it.
+
+    Raises FileNotFoundError if post with title not found
+    """
+
+    posts_nums = get_posts_nums()
+    for post_num in posts_nums:
+        if get_post_title(post_num).lower() == title.lower():
+            os.remove(blueprint_blog.root_path+"/templates/posts/post-"+str(post_num)+".html") # Remove file
+            return
+
+    raise FileNotFoundError("No post with title \"%s\" found!" % title)
+
 
 def get_post_title(post_num: int):
     """Grabs the title of a post by grabbing the text between the h2 tags"""
@@ -76,10 +99,13 @@ def get_blog_posts(num_to_show=5, page=0):
     """Grabs files like 'post-1.html', 'post-23.html' and so on and returns num_to_show worth of them on a specific page."""
 
     # Returns all the numbers on the posts
-    posts_nums = sorted([int(i.split('.html')[0].split('-')[-1]) for i in os.listdir(blueprint_blog.root_path+"/templates/posts/")])
+    posts_nums = get_posts_nums()
 
     # Returns the posts requested
     posts = ["post-"+str(i)+".html" for i in posts_nums[-num_to_show-(num_to_show * page):len(posts_nums)-(num_to_show * page)]]
     posts.reverse()
     return posts
+
+def get_posts_nums():
+    return sorted([int(i.split('.html')[0].split('-')[-1]) for i in os.listdir(blueprint_blog.root_path+"/templates/posts/")])
 

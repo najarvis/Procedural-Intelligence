@@ -1,0 +1,9 @@
+{% extends "base_template.html" %}
+{% block title %}All Posts{% endblock %}
+{% block content %}
+    {% for post in posts %}
+    <div class="well">
+        <a href="#">{{ post['title'] }}</a>
+    </div>
+    {% endfor %}
+{% endblock %}
