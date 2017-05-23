@@ -22,10 +22,10 @@ class ProcintTestCase(unittest.TestCase):
 
         login_data = dict(username=username,
                           password=password)
-        return self.app.post('/login', data=login_data)
+        return self.app.post('/login', data=login_data, follow_redirects=True)
 
     def login_successfully(self):
-        return login(os.environ['USERNAME'], os.environ['PASSWORD'])
+        return self.login(os.environ['USERNAME'], os.environ['PASSWORD'])
 
     def test_default(self):
         """Test to see if the default page redirects to the blog"""
@@ -41,19 +41,20 @@ class ProcintTestCase(unittest.TestCase):
         assert rv.data.count(b'<h2 class="blog-post-title">') == 3
 
     def test_login(self):
-        rv = login('najarvis', 'thisisnotthepassword')
+        # TODO: Check for an error message like 'incorrect login credentials'.
+        rv = self.login('admin', 'password') # Check incorrect login just redirects back to login page.
         assert b'<input class="form-control" type="text" name="username" placeholder="Username">' in rv.data
 
-        rv = login_successfully()
+        rv = self.login_successfully()
         assert b'<h2 class="blog-post-title">' in rv.data
 
     def test_add_remove_post(self):
-        login_successfully()
+        self.login_successfully()
 
         num_posts = len(os.listdir('blueprints/blog/templates/posts/'))
         data = dict(title="TEST_POST",
                     content="THIS IS A TEST POST")
-        rv = self.app.post('/create_post', data=data)
+        rv = self.app.post('/create_post', data=data, follow_redirects=True)
 
         assert b'<h2 class="blog-post-title">TEST_POST</h2>' in rv.data
         assert len(os.listdir('blueprints/blog/templates/posts/')) == num_posts + 1
