@@ -9,6 +9,7 @@ UPLOAD_FOLDER = 'static/images'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
 
 app.secret_key = os.environ['SECRET_KEY']
 
@@ -27,6 +28,10 @@ def special_creator():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
+@app.errorhandler(413)
+def page_not_found(e):
+    return render_template("413.html", e=e), 413
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
