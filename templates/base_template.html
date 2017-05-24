@@ -8,7 +8,7 @@
 
         <title>{% block title %}{% endblock %} - Procedural Intelligence</title>
         <!--
-                        Well hey there, fancy meeting you here. Welcome to my site. If you would like to contact me,
+                        Well hey there! fancy meeting you here. Welcome to my site. If you would like to contact me,
                         feel free at najarvis2016@gmail.com.
         -->
 
@@ -45,10 +45,12 @@
 	    	</div>
 
 	    	<div class="row">
+                {% block small_width %}
 	    		<div class="col-sm-8 blog-main">
                     {% block content %}
                     {% endblock %}
                 </div> <!-- End blog main -->
+                {% endblock %}
 
                 <div class="col-sm-4 blog-sidebar">
                     {% block sidebar %}

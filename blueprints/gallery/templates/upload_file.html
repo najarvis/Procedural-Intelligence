@@ -1,0 +1,11 @@
+{% extends "base_template.html" %}
+{% block title %}Upload File{% endblock %}
+
+{% block small_width %}
+<form class="form col-sm-8 col-sm-offset-2" method="post" enctype="multipart/form-data">
+    <h2>Upload a new file</h2>
+    <p><input class="form-control" type="file" name="file"></p>
+    <p><button class="btn btn-primary">Upload</button></p>
+</form>
+{% endblock %}
+{% block sidebar %}{% endblock %}

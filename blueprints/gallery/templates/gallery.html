@@ -1,0 +1,26 @@
+{% extends "base_template.html" %}
+{% block title %}Gallery{% endblock %}
+{% block small_width %}
+
+<div class="blog-main">
+    <div class="row">
+        {% if user is not none %}
+        <button class="btn btn-success" onclick="location='/upload'">Upload New Picture</button>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        {% for picture in pictures %}
+        <div class="picture visible-xs">
+            <img src="{{ url_for('static', filename='images/'+picture) }}" class="img-responsive">
+        </div>
+        <div class="picture hidden-xs" style="background-image: url('{{ url_for('static', filename='images/'+picture) }}');">
+            <!--<img src="{{ url_for('static', filename='images/'+picture) }}" class="bucket">-->
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
+{% block sidebar %}{% endblock %}

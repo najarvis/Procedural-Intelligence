@@ -6,15 +6,18 @@ import os
 import unittest
 import procint
 import tempfile
+from io import BytesIO
 
 class ProcintTestCase(unittest.TestCase):
 
     def setUp(self):
         procint.app.config['TESTING'] = True
         self.app = procint.app.test_client()
+        self.handle = None
 
     def tearDown(self):
-        pass
+        if self.handle is not None:
+            os.close(self.handle)
 
     def login(self, username, password):
         """Log in the test using the given username and password. If a test needs to be logged in simply call
@@ -62,6 +65,24 @@ class ProcintTestCase(unittest.TestCase):
         self.app.post('/delete_post', data=dict(post_title="TEST_POST"))
 
         assert len(os.listdir('blueprints/blog/templates/posts/')) == num_posts
+
+    def test_upload(self):
+        """Test uploading a file"""
+        self.login_successfully()
+
+        num_files = len(os.listdir('static/images'))
+        self.handle, filename = tempfile.mkstemp()
+
+        rv = self.app.post('/upload',
+                           data={
+                               'file': (BytesIO(b'my file contents'), 'hello_world.txt')
+                           },
+                           follow_redirects=True)
+
+        assert len(os.listdir('static/images')) == num_files + 1
+
+        os.remove('static/images/hello_world.txt')
+        assert len(os.listdir('static/images')) == num_files
 
 if __name__ == "__main__":
     unittest.main()

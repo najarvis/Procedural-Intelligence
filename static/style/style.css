@@ -21,10 +21,10 @@
 .colorE {
 	background-color: #12130f; /* very dark brown */
 }
-
+/*
 img {
   width: auto;
-}
+}*/
 
 /*
  * Globals
@@ -42,6 +42,28 @@ a {
 .Title:hover {
     color: #12130f;
     text-decoration: none;
+}
+
+.bucket {
+    margin: 0;
+    width: 25%;
+    position: relative;
+    float: left;
+    object-fit: cover;
+}
+
+.picture {
+    position: relative;
+    width: 25%;
+    float: left;
+    object-fit: contain;
+    background-size: cover;
+}
+
+.picture:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
 }
 
 body {

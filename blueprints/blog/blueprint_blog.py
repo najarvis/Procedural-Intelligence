@@ -1,6 +1,7 @@
 import os
 import datetime
 from flask import Blueprint, render_template, request, session, url_for, redirect
+from flask import current_app as app
 
 blueprint_blog = Blueprint('blog', __name__, template_folder='templates')
 
