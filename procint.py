@@ -21,6 +21,10 @@ app.register_blueprint(blueprint_gallery)
 def default():
     return redirect(url_for('blog.view_blog'))
 
+@app.route('/projects')
+def projects():
+    return render_template("projects.html")
+
 @app.route('/special')
 def special_creator():
     return render_template("special_creator.html")
