@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, url_for, session
 from blueprints.blog.blueprint_blog import blueprint_blog
 from blueprints.login.blueprint_login import blueprint_login
 from blueprints.gallery.blueprint_gallery import blueprint_gallery
+from blueprints.game.blueprint_game import blueprint_game
 
 UPLOAD_FOLDER = 'static/images'
 
@@ -16,6 +17,7 @@ app.secret_key = os.environ['SECRET_KEY']
 app.register_blueprint(blueprint_blog)
 app.register_blueprint(blueprint_login)
 app.register_blueprint(blueprint_gallery)
+app.register_blueprint(blueprint_game)
 
 @app.route('/')
 def default():
