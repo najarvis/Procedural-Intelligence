@@ -2,6 +2,7 @@ import os
 from flask import Blueprint, render_template, request, session, flash, redirect, url_for
 from flask import current_app as app
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 blueprint_gallery = Blueprint('gallery', __name__, template_folder='templates')
 
@@ -40,6 +41,16 @@ def upload_image():
         if uploaded_file:
             filename = secure_filename(uploaded_file.filename)
             uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            # Resize all images to an acceptable size.
+            basewidth = 1600
+            im = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            wpercent = (basewidth / im.size[0])
+            hsize = int(im.size[1] * wpercent)
+
+            im = im.resize((basewidth, hsize), Image.ANTIALIAS)
+            im.save(os.path.join(app.config['UPLOAD_FOLDER'], filename), optimize=True, quality=85)
+
             return redirect(url_for('gallery.view_gallery'))
 
     return render_template('upload_file.html')
