@@ -1,4 +1,6 @@
 import os
+import bcrypt
+from tinydb import TinyDB, Query
 from flask import Blueprint, render_template, request, session, url_for, redirect
 
 blueprint_login = Blueprint('login', __name__, template_folder='templates')
@@ -17,14 +19,23 @@ def view_login():
         else:
             return render_template('login.html')
 
-        return redirect(url_for('blog.view_blog'))
+        return redirect(url_for('blog.post_creator'))
 
     return render_template('login.html')
 
 @blueprint_login.route('/logout')
 def view_logout():
     del session['user']
-    return redirect(url_for('blog.view_blog'))
+    return redirect(url_for('blog.view_post'))
 
 def is_valid_login(username: str, password: str):
-    return username == os.environ['USERNAME'] and password == os.environ['PASSWORD']
+
+    # Open the database
+    db = TinyDB('db.json')
+    users_table = db.table('users')
+
+    user = users_table.get(Query().username == username)
+    if user is not None:
+        return bcrypt.checkpw(password.encode(), user['password'].encode())
+        
+    return False

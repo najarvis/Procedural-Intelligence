@@ -2,18 +2,51 @@ import os
 import datetime
 from flask import Blueprint, render_template, request, session, url_for, redirect
 from flask import current_app as app
+from tinydb import TinyDB, Query
 
 blueprint_blog = Blueprint('blog', __name__, template_folder='templates')
 
 @blueprint_blog.route('/blog')
-@blueprint_blog.route('/blog/<num_per_page>/<page>')
-def view_blog(num_per_page=1, page=0):
-    posts = get_blog_posts(int(num_per_page), int(page))
-    max_num = max([int(i.split('.html')[0].split('-')[-1]) for i in os.listdir(blueprint_blog.root_path+"/templates/posts/")])
+@blueprint_blog.route('/blog/<title>')
+def view_post(title=None):
+    # Open the database
+    db = TinyDB('db.json')
+    post_table = db.table('posts')
 
-    prev_title, next_title  = get_surrounding_titles(max_num - int(num_per_page) * int(page))
+    # If the title is specified, try to show that post.
+    if title is not None:
+        p = post_table.get(Query().title == title.title())
+        if p is not None:
+            post_num = p['post_number']
+        else:
+            return render_template("404.html")
+
+    else:
+        # By default, show the latest post.
+        if len(post_table) > 0:
+            post_num = max(p['post_number'] for p in post_table.all())
+        else:
+            post_num = 0
+
+    # Get the post dict
+    post = post_table.get(Query().post_number == post_num)
+    prev_title, next_title  = get_surrounding_titles(post_num)
+
+    try:
+        if post is not None:
+            with open(blueprint_blog.root_path + "/posts/" + post['filename'], 'r') as f:
+                post['content'] = f.read().split('\n')
+
+    except FileNotFoundError:
+        # Missing the file but it is found in the database.
+        return render_template("500.html")
     
-    return render_template("blog.html", posts=posts, per_page=int(num_per_page), page_num=int(page), next_title=next_title, prev_title=prev_title)
+    return render_template("blog.html", post=post, next_title=next_title, prev_title=prev_title)
+
+@blueprint_blog.route('/all')
+def view_all_posts():
+
+    return render_template("all_posts.html")
 
 @blueprint_blog.route('/create_post', methods=['GET', 'POST'])
 def post_creator():
@@ -22,7 +55,7 @@ def post_creator():
  
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])
-        return redirect(url_for("blog.view_blog"))
+        return redirect(url_for("blog.view_post"))
 
     return render_template("post_creator.html")
 
@@ -32,31 +65,48 @@ def post_deleter():
         return redirect(url_for('login.view_login'))
 
     remove_post(request.form['post_title'])
-    return redirect(url_for("blog.view_blog"))
+    return redirect(url_for("blog.view_post"))
 
 def add_post(title: str, text: str):
-    """Create a post-*.html file and save it based on input fields."""
+    """Create a post-*.html file and save it based on input fields.
 
-    posts_nums = get_posts_nums()
-    new_post_num = int(posts_nums[-1]) + 1 # Grab the highest post number and add one to it. It will be the number for the new post.
+       Each post has the following things
+        * filename
+        * title (Primary Key)
+        * date
+        * author
+        * subject - TODO
+        * icon (filename) - TODO
+        * post_number
+    """
 
-    # Create a string for the date
+    # Open the database
+    db = TinyDB('db.json')
+    post_table = db.table('posts')
+
+    # Post number should always increase. Only time it doesn't is if the most recent post gets removed.
+    if len(post_table) > 0:
+        post_number = max(p['post_number'] for p in post_table.all()) + 1
+    else:
+        post_number = 0
+
     d = datetime.datetime.now()
-    date_string = "Posted on: {m}/{d}/{y}".format(m=d.month, d=d.day, y=d.year)
+    date = "{m}/{d}/{y}".format(m=d.month, d=d.day, y=d.year)
 
-    with open(blueprint_blog.root_path+"/templates/posts/post-"+str(new_post_num)+'.html', 'w') as f:
-        paragraphs = text.split('\n')
-        
-        # Add in the title and date
-        final_text = '<h2 class="blog-post-title">' + title + '</h2>'
-        final_text += '<p class="blog-post-meta">' + date_string + '</p>' 
+    filename = str(title) + ".txt"
+    Post = Query()
+    if post_table.get(Post.title == title.title()) is not None:
+        print("HOW")
+        raise ValueError("Duplicate title not allowed!")
 
-        # Add in all the paragraphs
-        final_text += '<p>'
-        final_text += '</p><p>'.join(paragraphs)
-        final_text += '</p>'
-        
-        f.write(final_text)
+    # TODO
+    subject = "Projects"
+    icon = ''
+
+    post_table.insert({'filename': filename, 'title': title.title(), 'date': date, 'author': 'Nick Jarvis', 'subject': subject, 'icon': icon, 'post_number': post_number})
+
+    with open(blueprint_blog.root_path+"/posts/"+filename, 'w') as f:
+        f.write(text)
 
 def remove_post(title: str):
     """Searches for a post with the supplied title and deletes it if it finds it.
@@ -64,25 +114,33 @@ def remove_post(title: str):
     Raises FileNotFoundError if post with title not found
     """
 
-    posts_nums = get_posts_nums()
-    for post_num in posts_nums:
-        if get_post_title(post_num).lower() == title.lower():
-            os.remove(blueprint_blog.root_path+"/templates/posts/post-"+str(post_num)+".html") # Remove file
-            return
+    db = TinyDB('db.json')
+    post_table = db.table('posts')
 
-    raise FileNotFoundError("No post with title \"%s\" found!" % title)
+    Post = Query()
+    p = post_table.get(Post.title == title.title())
+    if p is not None:
+        fname = p['filename']
+        post_table.remove(Post.title == title.title())
+        os.remove(blueprint_blog.root_path+"/posts/"+fname)
+        return
+    
+    else:
+        raise FileNotFoundError("No post with title: \"%s\" found" % title)
 
 
 def get_post_title(post_num: int):
     """Grabs the title of a post by grabbing the text between the h2 tags"""
+    
+    db = TinyDB('db.json')
+    post_table = db.table('posts')
+    Post = Query()
 
-    try:
-        with open(blueprint_blog.root_path+'/templates/posts/post-'+str(post_num)+'.html', 'r') as f:
-            s = f.read()
-            title = s[s.find('<h2 class="blog-post-title">')+len('<h2 class="blog-post-title">'):s.find('</h2>')] # This grabs the text between the <h2> and </h2> tags.
-            return title
+    p = post_table.get(Post.post_number == post_num)
+    if p is not None:
+        return p['title']
 
-    except FileNotFoundError:
+    else:
         return None
 
 def get_surrounding_titles(post_num: int):
@@ -95,18 +153,3 @@ def get_surrounding_titles(post_num: int):
     next_title = get_post_title(post_num+1)
     
     return (prev_title, next_title)
-
-def get_blog_posts(num_to_show=5, page=0):
-    """Grabs files like 'post-1.html', 'post-23.html' and so on and returns num_to_show worth of them on a specific page."""
-
-    # Returns all the numbers on the posts
-    posts_nums = get_posts_nums()
-
-    # Returns the posts requested
-    posts = ["post-"+str(i)+".html" for i in posts_nums[-num_to_show-(num_to_show * page):len(posts_nums)-(num_to_show * page)]]
-    posts.reverse()
-    return posts
-
-def get_posts_nums():
-    return sorted([int(i.split('.html')[0].split('-')[-1]) for i in os.listdir(blueprint_blog.root_path+"/templates/posts/")])
-

@@ -19,9 +19,11 @@ app.register_blueprint(blueprint_login)
 app.register_blueprint(blueprint_gallery)
 app.register_blueprint(blueprint_game)
 
+app.DEBUG = True
+
 @app.route('/')
 def default():
-    return redirect(url_for('blog.view_blog'))
+    return redirect(url_for('blog.view_post'))
 
 @app.route('/projects')
 def projects():

@@ -1,0 +1,3 @@
+<p>I started learning some PHP, and have implemented a simple system for storing posts in separate files. Very basic but gets the job done. I'm still not quite sure what I want this site to become, perhaps I'll add a page where I can put my programming projects. I am definitely starting to enjoy working on "web stuff" more.</p>
+
+<p>I have a book titled "Pro HTML5 Games", perhaps I'll try making one of those and putting it on here. That sounds pretty neat.</p>
