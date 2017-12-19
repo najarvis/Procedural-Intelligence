@@ -15,28 +15,6 @@
     <!-- Screenfull.js (controls fullscreen functionality) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.2/screenfull.js"></script>
 
-    <style>
-      .half_block {
-        height: 50vh;
-        width: 100vw;
-        display: block;
-      }
-
-      .half_top {
-        vertical-align: -30vh;
-      }
-
-      .Time {
-        vertical-align: 5vh;
-        font-size: 4em;
-      }
-
-      .t {
-        background-color: #000000;
-        color: #FF0000;
-      }
-
-    </style>
     <script type="text/javascript">
       $(document).ready(function() {
 
@@ -70,15 +48,65 @@
       });
     </script>
 
+    <style>
+      .half_block {
+        height: 50vh;
+        width: 100vw;
+        display: block;
+        padding-top: 0;
+        padding-bottom: 0;
+        font-size: 6em;
+      }
+
+      .half_block p {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .word-div {
+        padding-top: 5vh;
+        height: 20vh;
+        padding-bottom: 5vh;
+        width: 100vw;
+        display: block;
+        font-size: 5em;
+      }
+
+      .word-div p {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .half_top {
+        vertical-align: -30vh;
+      }
+
+      .Time {
+        vertical-align: 5vh;
+        font-size: 4em;
+      }
+
+      .t {
+        background-color: #000000;
+        color: #FF0000;
+      }
+
+    </style>
   </head>
   <body>
     <div style="height: 100vh;" id="whole" class="center-align t">
-      <div class="half_block">
-        <h3><span class="half_top">Next Show:</span></h3>
+      <div class="word-div">
+        <p style="padding-top: 15vh;">Next Show:</p>
       </div>
-      <div class="half_block">
-        <h1><span id="Time" class="Time"></span></h1>
-        <h4><span id="TL"></span></h4>
+      <div class="half_block vertical-align">
+        <p><span id="Time" class="Time"></span></p>
+      </div>
+      <div class="word-div">
+        <p><span id="TL"></span></p>
       </div>
     </div>
   <body>
