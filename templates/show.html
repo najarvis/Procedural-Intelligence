@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  
+      <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <!-- Screenfull.js (controls fullscreen functionality) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.2/screenfull.js"></script>
+
+    <style>
+      .half_block {
+        height: 50vh;
+        width: 100vw;
+        display: block;
+      }
+
+      .half_top {
+        vertical-align: -25vh;
+      }
+
+      .Time {
+        font-size: 4em;
+      }
+
+      .t {
+        background-color: #000000;
+        color: #FF0000;
+      }
+
+    </style>
+    <script type="text/javascript">
+      $(document).ready(function() {
+
+        document.getElementById('whole').addEventListener('click', () => {
+          if (screenfull.enabled) {
+            screenfull.toggle(document.getElementById('whole'));
+          } else {
+            // Ignore or do something else
+          }
+        });
+
+        setInterval(function() {
+          var full_hour = 3600 * 1000;
+          var now = new Date();
+          var tl = full_hour - now % full_hour;
+          var section = "AM";
+
+          var hours = new Date(now - tl + tl + tl).getHours();
+          if (hours >= 12) {
+            section = "PM";
+            hours -= 12;
+          }
+          if (hours == 0) {
+            hours = 12;
+          }
+
+          document.getElementById('Time').innerHTML = "" + hours + ":00";
+          document.getElementById('TL').innerHTML = "Starts in " + parseInt(tl / (1000 * 60)) + " minutes";
+        }, 1000);
+
+      });
+    </script>
+
+  </head>
+  <body>
+    <div style="height: 100vh;" id="whole" class="center-align t">
+      <div class="half_block">
+        <h3><span class="half_top">Next Show:</span></h3>
+      </div>
+      <div class="half_block">
+        <h1><span id="Time" class="Time"></span></h1>
+        <h4><span id="TL"></span></h4>
+      </div>
+    </div>
+  <body>
+</html>

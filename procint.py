@@ -33,6 +33,10 @@ def projects():
 def special_creator():
     return render_template("special_creator.html")
 
+@app.route('/lw-next-show')
+def next_show():
+	return render_template("show.html")
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
