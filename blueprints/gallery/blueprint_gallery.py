@@ -4,23 +4,23 @@ from flask import current_app as app
 from werkzeug.utils import secure_filename
 from PIL import Image
 
-blueprint_gallery = Blueprint('gallery', __name__, template_folder='templates')
+BLUEPRINT_GALLERY = Blueprint('gallery', __name__, template_folder='templates')
 
-@blueprint_gallery.route('/gallery')
-@blueprint_gallery.route('/gallery/<picture_id>')
+@BLUEPRINT_GALLERY.route('/gallery')
+@BLUEPRINT_GALLERY.route('/gallery/<picture_id>')
 def view_gallery(picture_id=None):
     user = None
     if 'user' in session:
         user = session['user']
 
-    if picture_id is None:
-        pictures = os.listdir('static/images')
-        return render_template("gallery.html", user=user, pictures=pictures)
-
     if picture_id is not None:
         return render_template("view_image.html", picture_id=picture_id)
 
-@blueprint_gallery.route('/upload', methods=['GET', 'POST'])
+    pictures = os.listdir('static/images')
+    return render_template("gallery.html", user=user, pictures=pictures)
+
+
+@BLUEPRINT_GALLERY.route('/upload', methods=['GET', 'POST'])
 def upload_image():
     if 'user' not in session:
         return redirect(url_for('login.view_login'))

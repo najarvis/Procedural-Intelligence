@@ -1,50 +1,63 @@
-import os
-from flask import Flask, render_template, redirect, url_for, session
+"""Main file for Procedural Intelligence Website.
 
-from blueprints.blog.blueprint_blog import blueprint_blog
-from blueprints.login.blueprint_login import blueprint_login
-from blueprints.gallery.blueprint_gallery import blueprint_gallery
-from blueprints.game.blueprint_game import blueprint_game
+    Copyright (c) 2018 - Nick Jarvis
+"""
+import os
+from flask import Flask, render_template, redirect, url_for
+
+from blueprints.blog.blueprint_blog import BLUEPRINT_BLOG
+from blueprints.login.blueprint_login import BLUEPRINT_LOGIN
+from blueprints.gallery.blueprint_gallery import BLUEPRINT_GALLERY
+from blueprints.game.blueprint_game import BLUEPRINT_GAME
 
 UPLOAD_FOLDER = 'static/images'
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
+FLASK_APP = Flask(__name__)
 
-app.secret_key = os.environ['SECRET_KEY']
+# These configs are for large image uploads.
+FLASK_APP.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+FLASK_APP.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024
 
-app.register_blueprint(blueprint_blog)
-app.register_blueprint(blueprint_login)
-app.register_blueprint(blueprint_gallery)
-app.register_blueprint(blueprint_game)
+FLASK_APP.secret_key = os.environ['SECRET_KEY']
 
-app.DEBUG = True
+FLASK_APP.register_blueprint(BLUEPRINT_BLOG)
+FLASK_APP.register_blueprint(BLUEPRINT_LOGIN)
+FLASK_APP.register_blueprint(BLUEPRINT_GALLERY)
+FLASK_APP.register_blueprint(BLUEPRINT_GAME)
 
-@app.route('/')
+FLASK_APP.config['DEBUG'] = True
+
+@FLASK_APP.route('/')
 def default():
+    """Main page route"""
     return redirect(url_for('blog.view_post'))
 
-@app.route('/projects')
+@FLASK_APP.route('/projects')
 def projects():
+    """Projects page route"""
     return render_template("projects.html")
 
-@app.route('/special')
+@FLASK_APP.route('/special')
 def special_creator():
+    """Special route I created for a tool."""
     return render_template("special_creator.html")
 
-@app.route('/lw-next-show')
+@FLASK_APP.route('/lw-next-show')
 def next_show():
-	return render_template("show.html")
+    """Special route for another tool."""
+    return render_template("show.html")
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("404.html"), 404
+@FLASK_APP.errorhandler(404)
+def page_not_found(error):
+    """Basic 404 error route"""
+    # TODO: Log error
+    return render_template("404.html", error=error), 404
 
-@app.errorhandler(413)
-def page_not_found(e):
-    return render_template("413.html", e=e), 413
+@FLASK_APP.errorhandler(413)
+def entity_too_large(error):
+    """Basic 413 'Entity too large' error route"""
+    # TODO: Log error
+    return render_template("413.html", error=error), 413
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-
+    FLASK_APP.run(host='0.0.0.0')

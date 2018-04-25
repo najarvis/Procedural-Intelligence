@@ -1,32 +1,36 @@
-from flask import Blueprint, render_template, request, url_for, send_from_directory, jsonify
+"""This blueprint handles the running of the PacMan-JS game."""
+
 import json
+from flask import Blueprint, render_template, request, send_from_directory, jsonify
 
-blueprint_game = Blueprint('game', __name__, template_folder='pacmanjs-e', static_url_path='')
+BLUEPRINT_GAME = Blueprint('game', __name__, template_folder='pacmanjs-e', static_url_path='')
 
-@blueprint_game.route('/game')
+@BLUEPRINT_GAME.route('/game')
 def view_game():
+    """Basic route for PacMan-JS. Simply opens a page with the game on it."""
+
     return render_template("pages/index.html")
 
-@blueprint_game.route('/<path:file>')
-def get_file(file):
-	if file is not None:
-		return send_from_directory(blueprint_game.root_path+'/pacmanjs-e', file)
+@BLUEPRINT_GAME.route('/<path:requested_file>')
+def get_file(requested_file):
+    """Handles when the page requests js or css files"""
 
-@blueprint_game.route('/get_high_scores')
+    if requested_file is not None:
+        return send_from_directory(BLUEPRINT_GAME.root_path+'/pacmanjs-e', requested_file)
+    return ""
+
+@BLUEPRINT_GAME.route('/get_high_scores')
 def get_high_scores():
-    data = json.load(open(blueprint_game.root_path+'/pacmanjs-e/high_scores.json'))
+    """Simply returns the json data of the high score table."""
+
+    data = json.load(open(BLUEPRINT_GAME.root_path+'/pacmanjs-e/high_scores.json'))
     return jsonify(data)
 
-@blueprint_game.route('/update_high_scores', methods=['POST'])
+@BLUEPRINT_GAME.route('/update_high_scores', methods=['POST'])
 def update_high_scores():
+    """Updates the high score table based on json request POST data."""
+
     data = request.get_json()
-    with open(blueprint_game.root_path+'/pacmanjs-e/high_scores.json', 'w') as f:
+    with open(BLUEPRINT_GAME.root_path+'/pacmanjs-e/high_scores.json', 'w') as f:
         json.dump(data, f)
     return jsonify(data)
-
-# @blueprint_game.route('/grab_script/<script>')
-# def get_script(script=None):
-#     if script is None:
-#         return
-
-#     return render_template('scripts/'+script)
