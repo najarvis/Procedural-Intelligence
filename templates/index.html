@@ -1,76 +1,9 @@
-<html>
-    {% block head %}
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="/static/bootstrap/js/jquery.min.js"></script>
-
-        <title>{% block title %}{% endblock %} - Procedural Intelligence</title>
-        <!--
-                        Well hey there, fancy meeting you here. Welcome to my site. If you would like to contact me,
-                        feel free at najarvis2016@gmail.com.
-        -->
-
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-
-
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-
-    	<link rel="stylesheet" type="text/css" href="/static/style/style.css">
-    </head>
-    {% endblock %}
-    <body class="colorA">
-    	<div class="container">
-
-	    	<div class="jumbotron blog-header">
-	    		<h1>Procedural Intelligence</h1>
-	    		<!-- TODO: Make site sentient -->
-	    		<p class="lead blog-description">My (Currently) Non-Sentient Blog</p>
-	    	</div>
-
-	    	<div class="row">
-	    		<div class="col-sm-8 blog-main">
-                            {% block content %}
-                            {% endblock %}
-                        </div> <!-- End blog main -->
-
-                        <div class="col-sm-4 blog-sidebar">
-                            {% block sidebar %}
-			    	<div class="sidebar-module">
-			    		<h2><a href="projects.php">Projects Page</a></h2>
-			    	</div>
-
-			    	<div class="sidebar-module sidebar-module-inset">
-			    		<h4>About</h4>
-			    		<p>My name is Nick Jarvis and I am a fan of Artificial Intelligence, Programming, Games, and Memes.</p>
-			    	</div>
-
-			    	<div class="sidebar-module">
-			    		<!-- TODO: Fix links and make them functional -->
-			    		<h4>Old stuff (links currently do nothing)</h4>
-			    		<ol class="list-unstyled">
-			    			<li><a href="#">November 2016</a></li>
-			    			<li><a href="#">October 2016</a></li>
-			    		</ol>
-			    	</div>
-
-			    	<div class="sidebar-module"> <!-- Twitter -->
-			    		<a class="twitter-timeline" data-theme="dark" data-tweet-limit="8" data-link-color="#19CF86" href="https://twitter.com/runningsfunning">Tweets by runningsfunning</a>
-			    		<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-			    	</div>
-                            {% endblock %}
-                        </div> <!-- End sidebar -->
-	    	</div>	<!-- End row -->
-
-    	</div> <!-- End container -->
-
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    </body>
-</html>
-
+{% extends "base_template.html" %}
+{% block title %}Home{% endblock %}
+{% block small_width %}
+    <h2>Welcome!</h2>
+    <p>My name is Nick Jarvis, and this is my personal website.</p>
+    <p></p>
+{% endblock %}
+{% block sidebar %}
+{% endblock %}

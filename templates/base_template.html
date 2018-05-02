@@ -8,7 +8,7 @@
 
         <title>{% block title %}{% endblock %} - Procedural Intelligence</title>
         <!--
-                        Well hey there! fancy meeting you here. Welcome to my site. If you would like to contact me,
+                        Well hello! Fancy meeting you here. Welcome to my site. If you would like to contact me,
                         feel free at najarvis2016@gmail.com.
         -->
 
@@ -36,6 +36,31 @@
     </head>
     {% endblock %}
     <body class="colorA">
+        {% block navigation %}
+        <nav class="navbar navbar-inverse">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#Navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Procedural Intelligence</a>
+            </div>
+            <div class="collapse navbar-collapse" id="Navbar">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gallery">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/projects">Projects</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        {% endblock %}
     	<div class="container">
 
 	    	<div class="jumbotron blog-header">
@@ -44,31 +69,6 @@
 	    		<p class="lead blog-description">My (Currently) Non-Sentient Blog</p>
 	    	</div>
 
-            {% block navigation %}
-            <nav class="navbar navbar-inverse navbar-fixed-bottom">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#Navbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">Procedural Intelligence</a>
-                </div>
-                <div class="collapse navbar-collapse" id="Navbar">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/blog">Blog</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/gallery">Gallery</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/projects">Projects</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            {% endblock %}
 
 	    	<div class="row">
                 {% block small_width %}
@@ -83,7 +83,7 @@
 
                     <div class="sidebar-module sidebar-module-inset">
                         <h4>About</h4>
-                        <p>My name is Nick Jarvis and I am a fan of Artificial Intelligence, Programming, Games, and Running.</p>
+                        <p>My name is Nick Jarvis and I am a fan of Artificial Intelligence, Web Development, Game Development, and Running.</p>
                     </div>
 
                     <div class="sidebar-module hidden-xs"> <!-- Twitter -->

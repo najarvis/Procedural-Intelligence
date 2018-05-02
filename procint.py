@@ -30,7 +30,8 @@ FLASK_APP.config['DEBUG'] = True
 @FLASK_APP.route('/')
 def default():
     """Main page route"""
-    return redirect(url_for('blog.view_post'))
+    return render_template("index.html")
+    # return redirect(url_for('blog.view_post'))
 
 @FLASK_APP.route('/projects')
 def projects():
