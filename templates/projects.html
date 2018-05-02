@@ -1,39 +1,108 @@
 {% extends "base_template.html" %}
 {% block title %}Projects{% endblock %}
-{% block content %}
-    <div class="blog-post"> 
-        <h2>Villager Sim</h2>
-        <br>
-        <img src="{{ url_for('static', filename='page_images/SmallerScreenshot2.png') }}" class="img-responsive">
+{% block head %}
+{{ super() }}
+<style>
+img {
+    max-height: 300px;
+    max-width: 300px;
+}
+.thumbnail p {
+    font-size: 1.2em;
+    padding: 5px;
+}
 
-        <p><br>A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I started more than 4 years ago and have worked off and on since. A test in Artificial Intelligence, villagers explore and colonize a randomly generated island without player input. End goal of the project is for them to fully colonize and learn over time how to grow more efficiently.</p>
+.thumbnail li {
+    font-size: 1.2em;
+}
 
-        <p>Code link: <a href="https:/github.com/najarvis/villager-sim">GitHub</a></p>
+.thumbnail button {
+    margin: 10px;
+    font-size: 1.2em;
+}
+
+.banner {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    content: "";
+    height: 250px;
+    width: auto;
+}
+
+.banner-village {
+    background-image:url('static/page_images/SmallerScreenshot2.png');
+}
+
+.banner-sector {
+    background-image:url('static/page_images/Sector.png');
+}
+
+.banner-class {
+    background-image:url('static/page_images/LateForClass.png');
+}
+
+.banner-fortnight {
+    background-image:url('static/page_images/Fortnight.png');
+}
+
+h2 {
+    padding: 5px;
+    padding-top: 15px;
+}
+
+.emph {
+    font-size: 1.5em;
+}
+</style>
+{% endblock %}
+{% block small_width %}
+    <div class="container">
+        <h1>Projects</h1>
+        <p class="emph">These are some projects I've worked on. If you would like to read more about any of them make sure to click the 'read more' link under each one.</p>
+        <div class="thumbnail col-sm-6">
+            <div class="banner banner-fortnight"></div>
+            <h2>Fortnight</h2>
+            <p class="text-justify">The game I am currently working on. Similar to capture the flag but in complete darkness. Choose from either a wizard, archer, or warrior and use your class's special powers to create and manipulate light on the battlefield.</p>
+
+            <p>Code not available at this time. Soon!</p>
+            <a href="/fortnight-info"><button class="btn btn-success">Read More</button></a>
+        </div>
+        <div class="thumbnail col-sm-6">
+            <div class="banner banner-village"></div>
+            <h2>Villager Sim</h2>
+            <p class="text-justify">A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I started more than 4 years ago and have worked off and on since. A test in Artificial Intelligence, villagers explore and colonize a randomly generated island without player input. End goal of the project is for them to fully colonize and learn over time how to grow more efficiently.</p>
+
+            <p>Code link: <a href="https:/github.com/najarvis/villager-sim">GitHub</a></p>
+            <a href="/villager-sim"><button class="btn btn-success">Read More</button></a>
+        </div>
+
+        <div class="thumbnail col-sm-6">
+            <div class="banner banner-sector"></div>
+            <h2>Sector Shm'up</h2>
+
+            <p>A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I did for a programming competition. Ended up being finalists at the National FBLA Contenst, so that's pretty cool. A Shm'up where you play as a computer virus tracker, going from level to level inside a computer fighting and destroying multiple kinds of malware! Very fun project that actually was 'completed.'</p>
+
+            <p>Code link: <a href="https://github.com/NickWayne/NLC-2015">GitHub</a></p>
+            <a href="/sector-info"><button class="btn btn-success">Read More</button></a>
+        </div>
+
+        <div class="thumbnail col-sm-6">
+            <div class="banner banner-class"></div>
+            <h2>Late For Class!</h2>
+
+            <p>A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I did for a 6 hour Gamejam. you are going to be late for class unless you can get there in 60 seconds! Jump with space to avoid obstacles and get there before the time runs out.</p>
+            <p>Notes:</p>
+            <ol>
+                <li>No button to close the game when it is over, use Alt + F4.</li>
+                <li>Music May be a little loud, (but is still awesome).</li>
+                <li>No win / lose screens.</li>
+            </ol> 
+
+            <p>Download link: <a href="https://drive.google.com/drive/folders/0B1mUXYyKgBmHUmtad3hpUGFmeHc?usp=sharing">Google Drive</a></p>
+            <a href="/class-info"><button class="btn btn-success">Read More</button></a>
+        </div>
     </div>
-
-    <div class="blog-post">
-        <h2>Sector Shm'up</h2>
-        <br>
-        <img src="{{ url_for('static', filename='page_images/Sector.png')}}" class="img-responsive">
-
-        <p><br>A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I did for a programming competition. Ended up being finalists at the National FBLA Contenst, so that's pretty cool. A Shm'up where you play as a computer virus tracker, going from level to level inside a computer fighting and destroying multiple kinds of malware! Very fun project that actually was 'completed.'</p>
-
-        <p>Code link: <a href="https://github.com/NickWayne/NLC-2015">GitHub</a></p>
-    </div>
-
-    <div class="blog-post">
-        <h2>Late For Class!</h2>
-        <br>
-        <img src="{{ url_for('static', filename='page_images/LateForClass.png') }}" class="img-responsive">
-
-        <p><br>A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I did for a 6 hour Gamejam. you are going to be late for class and need to be there in 30 seconds! jump with space to avoid obstacles and get there before the time runs out.</p>
-        <p>Notes:</p>
-        <ol>
-            <li>No button to close the game when it is over, use Alt + F4.</li>
-            <li>Music May be a little loud, (but is still awesome).</li>
-            <li>No win / lose screens.</li>
-        </ol> 
-
-        <p>Download link: <a href="https://drive.google.com/drive/folders/0B1mUXYyKgBmHUmtad3hpUGFmeHc?usp=sharing">Google Drive</a></p>
-    </div>
+{% endblock %}
+{% block sidebar %}
 {% endblock %}

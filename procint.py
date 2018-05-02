@@ -38,6 +38,16 @@ def projects():
     """Projects page route"""
     return render_template("projects.html")
 
+@FLASK_APP.route('/about')
+def about():
+    """About page route"""
+    return render_template("about.html")
+
+@FLASK_APP.route('/contact')
+def contact():
+    """Contact page route."""
+    return render_template("contact.html")
+
 @FLASK_APP.route('/special')
 def special_creator():
     """Special route I created for a tool."""
