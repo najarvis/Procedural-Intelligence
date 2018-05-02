@@ -3,6 +3,9 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('game.get_script', script='vector.js') }}"></script>
+    <script src="{{ url_for('game.get_script', script='map_handler.js') }}"></script>
+    <script src="{{ url_for('game.get_script', script='GameScript.js') }}"></script>
 	<style>
 		html {
 			overflow-y: hidden;
@@ -23,8 +26,5 @@
 	</style>
 </head>
 <body onload="startGame()">
-    <script src="{{ url_for('game.get_script', script='vector.js') }}"></script>
-    <script src="{{ url_for('game.get_script', script='map_handler.js') }}"></script>
-    <script src="{{ url_for('game.get_script', script='GameScript.js') }}"></script>
 </body>
 </html>
