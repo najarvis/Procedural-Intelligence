@@ -3,7 +3,7 @@
 {% block head %}
 {{ super() }}
 <style>
-p, li {
+p, #languages li, #skills li {
   font-size: 1.2em;
 }
 </style>
@@ -15,7 +15,7 @@ p, li {
 
   <h2>Skills</h2>
   <p>Over the past few years I have worked to experience and try a variety of tools and languages to become a more well-rounded programmer. Some of the languages I've picked up (ranked in terms of proficiency) are:</p>
-  <ul>
+  <ul id="languages">
     <li>Python</li>
     <li>C++</li>
     <li>JavaScript</li>
@@ -23,7 +23,7 @@ p, li {
     <li>Java</li>
   </ul>
   <p>And some tools I've learned:</p>
-  <ul>
+  <ul id="skills">
     <li>Git</li>
     <li>MongoDB</li>
     <li>SQL</li>
