@@ -6,6 +6,35 @@
 p, #languages li, #skills li {
   font-size: 1.2em;
 }
+
+#languages_div {
+    width: 50%;
+}
+
+#skills_div {
+    width: 50%;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+@media only screen and (max-width: 768px) {
+    .flex-container {
+        flex-direction: column;
+    }
+
+    #languages_div {
+        width: 100%;
+    }
+
+    #skills_div {
+        width: 100%;
+    }
+}
+
 </style>
 {% endblock %}
 
@@ -14,29 +43,35 @@ p, #languages li, #skills li {
   <h1>About Me</h1>
 
   <h2>Skills</h2>
-  <p>Over the past few years I have worked to experience and try a variety of tools and languages to become a more well-rounded programmer. Some of the languages I've picked up (ranked in terms of proficiency) are:</p>
-  <ul id="languages">
-    <li>Python</li>
-    <li>C++</li>
-    <li>JavaScript</li>
-    <li>Golang</li>
-    <li>Java</li>
-  </ul>
-  <p>And some tools I've learned:</p>
-  <ul id="skills">
-    <li>Git</li>
-    <li>MongoDB</li>
-    <li>SQL</li>
-    <li>Unity Game Engine</li>
-    <li>Unreal Engine</li>
-    <li>Godot Game Engine</li>
-    <li>Splunk</li>
-    <li>SocketIO</li>
-    <li>Flask</li>
-  </ul>
-
+  <p>Over the past few years I have worked to experience and try a variety of tools and languages to become a more well-rounded programmer.</p>
+  <div class="flex-container">
+      <div id="languages_div">
+          <p>Some of the languages I've picked up (ranked in terms of proficiency) are:</p>
+          <ul id="languages">
+            <li>Python</li>
+            <li>C++</li>
+            <li>JavaScript</li>
+            <li>Golang</li>
+            <li>Java</li>
+          </ul>
+      </div>
+      <div id="skills_div">
+          <p>And some tools I've learned:</p>
+          <ul id="skills">
+            <li>Git</li>
+            <li>MongoDB</li>
+            <li>SQL</li>
+            <li>Unity Game Engine</li>
+            <li>Unreal Engine</li>
+            <li>Godot Game Engine</li>
+            <li>Splunk</li>
+            <li>SocketIO</li>
+            <li>Flask</li>
+          </ul>
+      </div>
+  </div>
   <h2>Interests</h2>
-  <p>Some of the things I'm most passionate about include: Game Development, Artificial Intelligence, and Running.</p>
+  <p>Some of the things I'm most passionate about include: game development, artificial intelligence, and running.</p>
 
   <h2>School</h2>
   <p>I am currently finishing up my second year at Miami University, with my plan being to graduate next year with a BS in Computer Science. I have taken courses on Algorithms, Data Structures, Networking, and more.</p>
