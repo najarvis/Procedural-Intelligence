@@ -3,7 +3,7 @@
     Copyright (c) 2018 - Nick Jarvis
 """
 import os
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, send_from_directory
 
 from blueprints.blog.blueprint_blog import BLUEPRINT_BLOG
 from blueprints.login.blueprint_login import BLUEPRINT_LOGIN
@@ -57,6 +57,11 @@ def special_creator():
 def next_show():
     """Special route for another tool."""
     return render_template("show.html")
+
+@FLASK_APP.route('/jarvis-resume')
+def download_resume():
+    """Sends the user my resume"""
+    return send_from_directory('static/other', 'NickJarvisResume.pdf')
 
 @FLASK_APP.errorhandler(404)
 def page_not_found(error):
