@@ -3,6 +3,23 @@
 {% block head %}
 {{ super() }}
 <style>
+.project-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  justify-content: space-around;
+}
+
+.project {
+  flex-basis: 49%;
+}
+
+@media only screen and (max-width: 768px) {
+  .project {
+    flex-basis: 100%;
+  }
+}
+
 img {
     max-height: 300px;
     max-width: 300px;
@@ -46,6 +63,14 @@ img {
     background-image:url('static/page_images/Fortnight.png');
 }
 
+.banner-pacman {
+    background-image:url('static/page_images/PacMan.png');
+}
+
+.banner-packing {
+    background-image:url('static/page_images/Packing.png');
+}
+
 h2 {
     padding: 5px;
     padding-top: 15px;
@@ -57,37 +82,37 @@ h2 {
 </style>
 {% endblock %}
 {% block small_width %}
-    <div class="container">
-        <h1>Projects</h1>
-        <p class="emph">These are some projects I've worked on. If you would like to read more about any of them make sure to click the 'read more' link under each one.</p>
-        <div class="thumbnail col-sm-6">
+    <h1 style="padding: 10px;">Projects</h1>
+    <div class="project-container">
+        <p class="emph">These are some projects I've worked on. I have included the links to the repositories on GitHub, please feel free to visit <a href="https://github.com/najarvis">my GitHub page</a> to see some of my smaller projects if you are interested.</p>
+        <div class="thumbnail project">
             <div class="banner banner-fortnight"></div>
             <h2>Fortnight</h2>
             <p class="text-justify">The game I am currently working on. Similar to capture the flag but in complete darkness. Choose from either a wizard, archer, or warrior and use your class's special powers to create and manipulate light on the battlefield.</p>
 
             <p>Code not available at this time. Soon!</p>
-            <a href="/fortnight-info"><button class="btn btn-success">Read More</button></a>
+            <!-- <a href="/fortnight-info"><button class="btn btn-success">Read More</button></a> -->
         </div>
-        <div class="thumbnail col-sm-6">
+        <div class="thumbnail project">
             <div class="banner banner-village"></div>
             <h2>Villager Sim</h2>
             <p class="text-justify">A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I started more than 4 years ago and have worked off and on since. A test in Artificial Intelligence, villagers explore and colonize a randomly generated island without player input. End goal of the project is for them to fully colonize and learn over time how to grow more efficiently.</p>
 
             <p>Code link: <a href="https:/github.com/najarvis/villager-sim">GitHub</a></p>
-            <a href="/villager-sim"><button class="btn btn-success">Read More</button></a>
+            <!-- <a href="/villager-sim"><button class="btn btn-success">Read More</button></a> -->
         </div>
 
-        <div class="thumbnail col-sm-6">
+        <div class="thumbnail project">
             <div class="banner banner-sector"></div>
             <h2>Sector Shm'up</h2>
 
             <p>A project <a href="https://github.com/nickwayne">Nick Wayne</a> and I did for a programming competition. Ended up being finalists at the National FBLA Contenst, so that's pretty cool. A Shm'up where you play as a computer virus tracker, going from level to level inside a computer fighting and destroying multiple kinds of malware! Very fun project that actually was 'completed.'</p>
 
             <p>Code link: <a href="https://github.com/NickWayne/NLC-2015">GitHub</a></p>
-            <a href="/sector-info"><button class="btn btn-success">Read More</button></a>
+            <!-- <a href="/sector-info"><button class="btn btn-success">Read More</button></a> -->
         </div>
 
-        <div class="thumbnail col-sm-6">
+        <div class="thumbnail project">
             <div class="banner banner-class"></div>
             <h2>Late For Class!</h2>
 
@@ -100,7 +125,25 @@ h2 {
             </ol>
 
             <p>Download link: <a href="https://drive.google.com/drive/folders/0B1mUXYyKgBmHUmtad3hpUGFmeHc?usp=sharing">Google Drive</a></p>
-            <a href="/class-info"><button class="btn btn-success">Read More</button></a>
+            <!-- <a href="/class-info"><button class="btn btn-success">Read More</button></a> -->
+        </div>
+
+        <div class="thumbnail project">
+          <div class="banner banner-pacman"></div>
+          <h2>PacMan-JS</h2>
+
+          <p>A project for my CSE 201 (Intro to Software Engineering) class, we built a PacMan-like game in Javascript. The high scores are saved server side so try to beat the current best! Warning: The ghosts close in pretty hard, and since each level is randomly generated it can be pretty difficult.</p>
+          <p>Code link: <a href="https://github.com/najarvis/PacManJS-E">Github</a></p>
+          <a href="/game"><button class="btn btn-success">Play Now!</button></a>
+        </div>
+
+        <div class="thumbnail project">
+          <div class="banner banner-packing"></div>
+
+          <p>A project for my Algorithms course. Efficiently packs objects into a space and includes a visualizer so you can see it afterwards. Still more work to be done, but functional in its current state.</p>
+
+          <p>Code link: <a href="https://github.com/najarvis/CSE-464-Packing-Algorithm">Github</a></p>
+          <!-- <a href="/packing-info"><button class="btn btn-success">Read More</button></a> -->
         </div>
     </div>
 {% endblock %}
