@@ -1,3 +1,4 @@
 procintenv/
 __pycache__
 static/images/*
+tests/*
