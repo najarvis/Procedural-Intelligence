@@ -10,15 +10,15 @@ BLUEPRINT_DATA = Blueprint('data', __name__, template_folder='templates')
 @BLUEPRINT_DATA.route('/upload_data', methods=['POST'])
 def upload_data():
     data = request.get_json(force=True)
-    print(data)
 
     db = TinyDB('db.json')
     probe_captures = db.table('pcaps')
 
+    device = data["device"]
     for scan in data['scans']:
-        probe_captures.insert(scan)
-
-    print(probe_captures.all())
+        new_scan = scan.copy()
+        new_scan["device"] = device
+        probe_captures.insert(new_scan)
 
     return jsonify({"status": "success"})
 
