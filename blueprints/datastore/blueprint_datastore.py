@@ -10,35 +10,41 @@ BLUEPRINT_DATA = Blueprint('data', __name__, template_folder='templates')
 @BLUEPRINT_DATA.route('/upload_data', methods=['POST'])
 def upload_data():
     data = request.get_json(force=True)
-    print(data)
 
-    db = TinyDB('db.json')
+    db_name = data['device']
+    db = TinyDB('capture_dbs/{}.json'.format(db_name))
     probe_captures = db.table('pcaps')
 
     for scan in data['scans']:
         probe_captures.insert(scan)
 
-    print(probe_captures.all())
-
     return jsonify({"status": "success"})
 
 @BLUEPRINT_DATA.route('/download_data', methods=['GET'])
-def download_data():
-    db = TinyDB('db.json')
+@BLUEPRINT_DATA.route('/download_data/<machine>', methods=['GET'])
+def download_data(machine=None):
+    if machine is None:
+        machine = "ACM-Blue"
+
+    db = TinyDB('capture_dbs/{}.json'.format(machine))
     probe_captures = db.table('pcaps')
 
-    if os.path.isfile('data/tmp.json'):
-        os.remove('data/tmp.json')
+    fname = 'data/tmp_{}.json'.format(machine)
+    if os.path.isfile(fname):
+        os.remove(fname)
 
-    with open("data/tmp.json", "w") as f:
+    with open(fname, "w") as f:
         f.write(json.dumps(probe_captures.all(), indent=2))
 
-    return send_from_directory('data', "tmp.json")
+    return send_from_directory('data', "tmp_{}.json".format(machine))
 
 @BLUEPRINT_DATA.route('/purge_scans', methods=['GET'])
 def purge_scans():
     """Empty the probe captures database. Cannot be undone."""
 
+    return jsonify({"status": "Currently under constructions."})
+
+    
     if 'user' not in session:
         return redirect('/login')
 
