@@ -56,3 +56,23 @@ def purge_scans():
     print(db.tables)
 
     return jsonify({"status": "success"})
+
+@BLUEPRINT_DATA.route('/upload_ip', methods=['POST'])
+def upload_ip():
+    print("IP IS: {}".format(request.remote_addr))
+    data = request.get_json(force=True)
+
+    db = TinyDB('ips.json')
+    Device = Query()
+
+    if db.search(Device.name == data['name']):
+        db.update({'ip': data['ip']}, Device.name == data['name'])
+    else:
+        db.insert({'ip': data['ip'], 'name': data['name']})
+
+    return jsonify({"status": "success"})
+
+@BLUEPRINT_DATA.route('/get_ips', methods=['GET'])
+def get_ips():
+    db = TinyDB('ips.json')
+    return jsonify(db.all())
