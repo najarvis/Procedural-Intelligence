@@ -59,16 +59,16 @@ def purge_scans():
 
 @BLUEPRINT_DATA.route('/upload_ip', methods=['POST'])
 def upload_ip():
-    print("IP IS: {}".format(request.remote_addr))
     data = request.get_json(force=True)
+    ip = request.remote_addr
 
     db = TinyDB('ips.json')
     Device = Query()
 
     if db.search(Device.name == data['name']):
-        db.update({'ip': data['ip']}, Device.name == data['name'])
+        db.update({'ip': ip}, Device.name == data['name'])
     else:
-        db.insert({'ip': data['ip'], 'name': data['name']})
+        db.insert({'ip': ip, 'name': data['name']})
 
     return jsonify({"status": "success"})
 
