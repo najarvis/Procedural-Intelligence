@@ -16,9 +16,11 @@ def upload_data():
     db = TinyDB('capture_dbs/{}.json'.format(db_name))
     probe_captures = db.table('pcaps')
 
-    probe_captures.insert_multiple(data['scans'])
-    #for scan in data['scans']:
-    #    probe_captures.insert(scan)
+    device = data["device"]
+    for scan in data['scans']:
+        new_scan = scan.copy()
+        new_scan["device"] = device
+        probe_captures.insert(new_scan)
 
     return jsonify({"status": "success"})
 
