@@ -4,6 +4,7 @@ from tinydb import TinyDB, Query
 from flask import Blueprint, render_template, request, session, url_for, redirect, jsonify, send_from_directory
 import json
 import os.path
+import time
 
 BLUEPRINT_DATA = Blueprint('data', __name__, template_folder='templates')
 
@@ -63,21 +64,22 @@ def upload_ip():
 
     ip = data["ip"]
     name = data["name"]
+    t = time.time()
 
     db = TinyDB('ips.json')
     Device = Query()
 
     if db.search(Device.name == name):
-        db.update({'ip': ip}, Device.name == name)
+        db.update({'ip': ip, 'last_seen': t}, Device.name == name)
     else:
-        db.insert({'ip': ip, 'name': name})
+        db.insert({'ip': ip, 'name': name, 'last_seen': t})
 
     return jsonify({"status": "success"})
 
 @BLUEPRINT_DATA.route('/get_ips', methods=['GET'])
 def get_ips():
     if 'user' not in session:
-        return redirect('/login')
+        return redirect(url_for('login.view_login', route='data.get_ips'))
 
     db = TinyDB('ips.json')
     return jsonify(db.all())
