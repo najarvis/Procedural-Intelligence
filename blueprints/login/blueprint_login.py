@@ -25,7 +25,7 @@ def view_login(route=None):
             session['user'] = request.form['username'].lower()
 
             if route is None:
-                return redirect(url_for('blog.post_creator'))
+                return redirect(url_for('about'))
 
             return redirect(url_for(route))
 
@@ -43,38 +43,40 @@ def view_logout():
     del session['user']
     return redirect(url_for('blog.view_post'))
 
-@BLUEPRINT_LOGIN.route('/create_user', methods=['POST'])
+@BLUEPRINT_LOGIN.route('/create_user', methods=['GET', 'POST'])
 def create_user():
     """This route creates a new user. Requires a valid access code. See generate_user_code()"""
 
-    data = request.get_json(force=True)
-    if "username" not in data or "password" not in data or "code" not in data:
-        return jsonify({"status": "error", "reason": "payload must include the fields: 'username', 'password', and 'code'"})
+    if request.method == 'POST':
+        data = request.get_json(force=True)
+        if "username" not in data or "password" not in data or "code" not in data:
+            return jsonify({"status": "error", "reason": "payload must include the fields: 'username', 'password', and 'code'"})
 
-    code = data["code"]
-    uname = data["username"]
-    passwd = data["password"]
+        code = data["code"]
+        uname = data["username"]
+        passwd = data["password"]
 
-    code_db = TinyDB('codes.json')
-    CodeQuery = Query()
-    code_element = code_db.get(CodeQuery.value == code)
-    if code_element is not None:
-        # There is a matching code in the db
-        if code_element.get("valid_until") < time.time():
-            return jsonify({"status": "error", "reason": "Access code expired. Please ask for a new one."})
+        code_db = TinyDB('codes.json')
+        CodeQuery = Query()
+        code_element = code_db.get(CodeQuery.value == code)
+        if code_element is not None:
+            # There is a matching code in the db
+            if code_element.get("valid_until") < time.time():
+                return jsonify({"status": "error", "reason": "Access code expired. Please ask for a new one."})
+            
+            # It is valid
+            db = TinyDB('db.json')
+            users_table = db.table('users')
+            bcrypt_password = bcrypt.hashpw(passwd.encode(), bcrypt.gensalt())
+            users_table.insert({"username": uname, "password": bcrypt_password.decode(), "roles": ["user"]})
+
+            # Remove code so it can't be used again.
+            code_db.remove(CodeQuery.value == code)
+            return jsonify({"status": "success"})
         
-        # It is valid
-        db = TinyDB('db.json')
-        users_table = db.table('users')
-        bcrypt_password = bcrypt.hashpw(passwd.encode(), bcrypt.gensalt())
-        users_table.insert({"username": uname, "password": bcrypt_password.decode(), "roles": ["user"]})
-
-        # Remove code so it can't be used again.
-        code_db.remove(CodeQuery.value == code)
-        return jsonify({"status": "success"})
-    
-    else:
         return jsonify({"status": "Invalid code."})
+
+    return render_template("create_user.html")
 
 @BLUEPRINT_LOGIN.route('/gen_code', methods=['GET'])
 def generate_user_code():
