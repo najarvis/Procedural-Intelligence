@@ -83,3 +83,12 @@ def get_ips():
 
     db = TinyDB('ips.json')
     return jsonify(db.all())
+
+@BLUEPRINT_DATA.route('/reset_ips', methods=['GET'])
+def reset_ips():
+    if 'user' not in session:
+        return redirect(url_for('login.view_login', route='data.get_ips'))
+
+    db = TinyDB('ips.json')
+    db.purge_table('_default')
+    return jsonify({"status": "success"})
