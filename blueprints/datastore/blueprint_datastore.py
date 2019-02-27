@@ -58,19 +58,26 @@ def purge_scans():
 @BLUEPRINT_DATA.route('/upload_ip', methods=['POST'])
 def upload_ip():
     data = request.get_json(force=True)
-    ip = request.remote_addr
+    if "ip" not in data or "name" not in data:
+        return jsonify({"status": "error", "reason": "payload should have the fields 'ip' and 'name.'"})
+
+    ip = data["ip"]
+    name = data["name"]
 
     db = TinyDB('ips.json')
     Device = Query()
 
-    if db.search(Device.name == data['name']):
-        db.update({'ip': ip}, Device.name == data['name'])
+    if db.search(Device.name == name):
+        db.update({'ip': ip}, Device.name == name)
     else:
-        db.insert({'ip': ip, 'name': data['name']})
+        db.insert({'ip': ip, 'name': name})
 
     return jsonify({"status": "success"})
 
 @BLUEPRINT_DATA.route('/get_ips', methods=['GET'])
 def get_ips():
+    if 'user' not in session:
+        return redirect('/login')
+
     db = TinyDB('ips.json')
     return jsonify(db.all())
