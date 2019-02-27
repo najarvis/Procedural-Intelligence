@@ -63,7 +63,7 @@ def post_creator():
     """
 
     if 'user' not in session:
-        return redirect(url_for('login.view_login'))
+        return redirect(url_for('login.view_login', route='blog.create_post'))
 
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])
