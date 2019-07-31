@@ -1,4 +1,4 @@
-from procint import app
+from procint import FLASK_APP
 
 if __name__ == "__main__":
-    app.run()
+    FLASK_APP.run()
