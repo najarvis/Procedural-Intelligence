@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <script src="{{ url_for('static', filename='js/helper.js')}}"></script>
+    </head>
+    <body>
+        <h1>THE WHEEL DECIDER</h1>
+        <canvas id="cv" width="750" height="750" style="border: 1px solid #303030"></canvas>
+        <br />
+        <button onclick="reset();">Spin!</button>
+        <script>
+            var canvas = document.getElementById("cv");
+            var ctx = canvas.getContext('2d');
+
+            var WIDTH = canvas.width;
+            var HEIGHT = canvas.height;
+            var CENTER_X = WIDTH / 2;
+            var CENTER_Y = HEIGHT / 2;
+            var RADIUS = Math.min(CENTER_X, CENTER_Y);
+
+            var OFFSET_ANGLE = 0;
+            var INTERVAL = 1000 / 60; // 1000 ms / 60fps
+            var ITERATION_NUMBER = 0;
+            var NUM_PIECES = 25;
+            var ROTATION_PER_SECOND = Math.PI;
+            var ROTATION_SPEED = 0;
+            var ANGLE_PER_PIECE = (2 * Math.PI) / NUM_PIECES;
+            var ROTATION_TIME = 5;
+
+            function HSV2RGB(hue, saturation, value) {
+                let vals = hsvToRgb(hue, saturation, value);
+
+                let r = vals[0].toString(16);
+                r = r.length == 1 ? "0" + r : r;
+                let g = vals[1].toString(16);
+                g = g.length == 1 ? "0" + g : g;
+                let b = vals[2].toString(16);
+                b = b.length == 1 ? "0" + b : b;
+                return "#" + r + g + b;
+            }
+
+            function randomColor() {
+                var options = '0123456789ABCDEF';
+                var color = "#";
+                for (let i = 0; i < 6; i++) {
+                    color += options[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            function randomNiceColor() {
+                hue = randRange(0, 360);
+                value = 80;
+                saturation = 80;
+                return HSV2RGB(hue, saturation, value);
+            }
+
+            var COLORS = [];
+            for (let i = 0; i < NUM_PIECES; i++) {
+                //COLORS.push(randomNiceColor());
+                let hue = (360 / NUM_PIECES) * i;
+                let value = 80;
+                let saturation = 80;
+                COLORS.push(HSV2RGB(hue, saturation, value));
+            }
+
+            function reset() {
+                ITERATION_NUMBER = 0;
+                ROTATION_SPEED = randRange(Math.PI * 5, Math.PI * 7);
+                ROTATION_TIME = randRange(4, 6);
+            }
+
+            // Gets the number of elapased seconds. 
+            function getElapsedTime() {
+                return (INTERVAL * ITERATION_NUMBER) / 1000;
+            }
+
+            function sinEase(duration, t) {
+                let pi2 = Math.PI / 2;
+                if (t > duration) { t = duration; }
+                if (t < 0) { t = 0; }
+                return Math.sin((pi2 / duration) * t);
+            }
+
+            function randRange(lower, higher) {
+                return lower + (higher - lower) * Math.random();
+            }
+
+            // Main game loop. 
+            function gameLoop() {
+                // ctx.arc(x, y, r, startAngle, endAngle)
+                for (let i = 0; i < NUM_PIECES; i++) {
+                    let startAngle = ANGLE_PER_PIECE * i + OFFSET_ANGLE;
+                    let endAngle = ANGLE_PER_PIECE * (i + 1) + OFFSET_ANGLE;
+                    let color = COLORS[i];
+
+                    // Draw slice
+                    ctx.beginPath();
+                    ctx.moveTo(CENTER_X, CENTER_Y);
+                    ctx.arc(CENTER_X, CENTER_Y, RADIUS, startAngle, endAngle);
+                    ctx.moveTo(CENTER_X, CENTER_Y);
+                    ctx.fillStyle = color;
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                ctx.beginPath();
+                ctx.arc(CENTER_X, CENTER_Y, RADIUS * 0.1, 0, 2 * Math.PI);
+                ctx.fillStyle="#000";
+                ctx.closePath();
+                ctx.fill();
+
+                OFFSET_ANGLE += (ROTATION_PER_SECOND * INTERVAL) / 1000;
+                // console.log("iteration" + ITERATION_NUMBER);
+                ITERATION_NUMBER += 1;
+                ROTATION_PER_SECOND = (1 - Math.pow(sinEase(ROTATION_TIME, getElapsedTime()), 2)) * ROTATION_SPEED;
+                // console.log(ROTATION_PER_SECOND, getElapsedTime());
+            }
+
+            var loopVar = setInterval(gameLoop, INTERVAL);
+        </script>
+    </body>
+</html>

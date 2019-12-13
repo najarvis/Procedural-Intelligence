@@ -10,6 +10,7 @@ from blueprints.login.blueprint_login import BLUEPRINT_LOGIN
 from blueprints.gallery.blueprint_gallery import BLUEPRINT_GALLERY
 from blueprints.game.blueprint_game import BLUEPRINT_GAME
 from blueprints.datastore.blueprint_datastore import BLUEPRINT_DATA
+from blueprints.wheel.blueprint_wheel import BLUEPRINT_WHEEL
 
 UPLOAD_FOLDER = 'static/images'
 
@@ -26,6 +27,7 @@ FLASK_APP.register_blueprint(BLUEPRINT_LOGIN)
 FLASK_APP.register_blueprint(BLUEPRINT_GALLERY)
 FLASK_APP.register_blueprint(BLUEPRINT_GAME)
 FLASK_APP.register_blueprint(BLUEPRINT_DATA)
+FLASK_APP.register_blueprint(BLUEPRINT_WHEEL)
 
 FLASK_APP.config['DEBUG'] = True
 
