@@ -4,8 +4,10 @@ from flask import Blueprint, render_template
 
 BLUEPRINT_TOOLS = Blueprint('tools', __name__, template_folder='templates')
 
-#TODO: Get the github project hooked up
-#TODO: Register this blueprint in the main file.
+#Original TODO: Get the github project hooked up
+# Edit: Looks like the project hasn't been updated in a while and the 
+# structure of the page it reads from is very different. I'll have to
+# write my own.
 
 @BLUEPRINT_TOOLS.route('/tools')
 def tools_index():
