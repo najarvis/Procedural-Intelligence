@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Plant data!</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+        <script src="/static/bootstrap/js/jquery.min.js"></script>
+    </head>
+    <body>
+        <canvas id="myChart" width="800" height="800"></canvas>
+        <script>
+            $(document).ready(function() {
+                var ctx = document.getElementById('myChart');
+
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [1, 2, 3],
+                        datasets: [{
+                            data: [1, 2, 4],
+                            label: "Sunlight"
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: "My neato plant data"
+                        }
+                    }
+                });
+
+                setInterval(updateChart, 1000, myChart);
+                //updateChart(myChart);
+            });
+
+            function updateChart(chart) {
+                
+                $.getJSON('/get-plant-data-raw', function(resp) {
+
+                    let new_labels = [];
+                    let new_data = [];
+                    for (let i = 0; i < resp.data.length; i++) {
+                        new_labels.push(resp.data[i][0]);
+                        new_data.push(resp.data[i][1]);
+                    }
+                    chart.data.datasets[0].data = new_data;
+                    chart.data.labels = new_labels;
+                    chart.update();
+                });
+            }
+        </script>
+    </body>
+</html>
