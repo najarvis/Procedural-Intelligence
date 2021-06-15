@@ -13,16 +13,22 @@ BLUEPRINT_TOOLS = Blueprint('tools', __name__, template_folder='templates')
 def tools_index():
     """Main tools route. Displays a listing of all tools hosted."""
 
-    render_template("tools.html")
+    return render_template("tools.html")
 
 @BLUEPRINT_TOOLS.route('/tools/wfdata/<search>')
 def wfdata_search(search=None):
     if search is None:
-        render_template("wfsearch.html")
+        return render_template("wfsearch.html")
 
     else:
         result_str = wfsearch(search)
-        render_template("wfsearch.html", result=result_str)
+        return render_template("wfsearch.html", result=result_str)
+
+@BLUEPRINT_TOOLS.route('/tomato')
+def tomato_timer():
+    """A pomodoro timer to help me focus"""
+
+    return render_template("pomodoro.html")
 
 def wfsearch(search_string):
     """Will call github.com/lyneca/wfdata to search for the most common places

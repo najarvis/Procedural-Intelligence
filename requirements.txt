@@ -13,5 +13,4 @@ pycparser==2.18
 pyparsing==2.2.0
 six==1.10.0
 tinydb==3.6.0
-uWSGI==2.0.15
 Werkzeug==0.15.5
