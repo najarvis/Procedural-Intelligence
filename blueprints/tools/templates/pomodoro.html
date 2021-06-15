@@ -1,0 +1,124 @@
+{% extends "base_template.html" %}
+
+{% block addlhead %}
+<script type="text/JavaScript"> // Main timer functions
+
+    var time_elapsed = 0;
+    var STOP_SIGNAL = 0;
+    var work_time = 25 * 60 * 1000; // 25 minutes (in milliseconds)
+    var rest_time = 5 * 60 * 1000; // 5 minutes
+    var timer_interval;
+
+    function start() {
+        var state = "WORKING";
+        var last_time = Date.now();
+        // var time_elapsed = 0;
+
+        // Setup interval
+        clearInterval(timer_interval);
+        timer_interval = setInterval(() => {
+            let time_str = "";
+            let new_time = Date.now();
+            let delta = new_time - last_time; // Time since the last time around
+            last_time = new_time;
+            time_elapsed += delta;
+            if (state === "WORKING") {
+                // Working period
+                time_str = convertToTimeStr(convertMStoS(work_time - time_elapsed));
+
+                if (time_elapsed >= work_time) {
+                    // Go back to working
+                    state = "RESTING";
+                    time_elapsed = 0;
+                    play_sound();
+                }
+            }
+            else if (state === "RESTING") {
+                // Resting period
+                time_str = convertToTimeStr(convertMStoS(rest_time - time_elapsed));
+
+                if (time_elapsed >= rest_time) {
+                    // Go back to working
+                    state = "WORKING";
+                    time_elapsed = 0;
+                    play_sound();
+                }
+            }
+
+            $("#timer").text(time_str);
+        }, 50); // Update every 50 ms
+
+    }
+
+    function convertMStoS(ms) {
+        return ms / 1000.0;
+    }
+
+    function convertToTimeStr(seconds) {
+        // https://stackoverflow.com/a/25279399/7631464
+        var date = new Date(0);
+        date.setSeconds(seconds); // specify value for SECONDS here
+        return date.toISOString().substr(11, 8);
+    }
+
+    function stop() {
+        clearInterval(timer_interval);
+    }
+
+    function restart() {
+        time_elapsed = 0;
+        time_str = convertToTimeStr(convertMStoS(work_time));
+        $("#timer").text(time_str);
+    }
+
+    function play_sound() {
+        var audio = new Audio("static/other/music/DrivingLoopFade.mp3");
+        audio.play();
+    }
+</script>
+<style>
+    .timer {
+        font-size: 5em;
+        display: block;
+    }
+
+    .start {
+        background: rgb(223,232,167);
+        background: linear-gradient(45deg, rgba(223,232,167,1) 0%, rgba(0,210,95,1) 100%);
+    }
+
+    .stop {
+        background: rgb(255,245,176);
+        background: linear-gradient(45deg, rgba(255,245,176,1) 0%, rgba(250,172,5,1) 100%);
+    }
+
+    .restart {
+        background: rgb(63,94,251);
+        background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+    }
+
+    .button {
+        border: none;
+        border-radius: 5px;
+        flex-grow: 1;
+        margin: 5px;
+    }
+
+    .button_container {
+        display: flex;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="width: 100%">
+    <span class="timer" id="timer">00:00:00</span>
+    <div class="button_container">
+        <button class="start button" onclick="start();">START</button>
+        <button class="stop button" onclick="stop();">PAUSE</button>
+        <button class="restart button" onclick="restart();">RESTART</button>
+    </div>
+</div>
+{% endblock %}
+{% block include_sidebar %}{% endblock %}
