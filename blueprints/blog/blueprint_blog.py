@@ -8,11 +8,26 @@ from tinydb import TinyDB, Query
 
 BLUEPRINT_BLOG = Blueprint('blog', __name__, template_folder='templates')
 
-@BLUEPRINT_BLOG.route('/blog')
-@BLUEPRINT_BLOG.route('/blog/<title>')
+@BLUEPRINT_BLOG.route('/blog', methods=['GET', 'POST'])
+@BLUEPRINT_BLOG.route('/blog/<title>', methods=['GET', 'POST'])
 def view_post(title=None):
     """Main blog route. Displays posts based on a title or the most recent one.
     """
+
+    if request.method == 'POST':
+        if 'user' not in session:
+            return redirect(url_for('login.view_login', route='blog.view_post'))
+       
+
+        if 'post_title' not in request.form:
+            return render_template("500.html")
+
+        try:
+            remove_post(request.form['post_title'])
+            return redirect(url_for('blog.view_post'))
+
+        except FileNotFoundError:
+            return render_template('500.html')
 
     # Open the database
     db = TinyDB('db.json')
@@ -37,7 +52,7 @@ def view_post(title=None):
     post = post_table.get(Query().post_number == post_num)
     prev_title, next_title = get_surrounding_titles(post_num)
 
-    first_title = get_first_post()
+    first_title = url_for('blog.view_post', get_first_post())
 
     try:
         if post is not None:
@@ -53,13 +68,15 @@ def view_post(title=None):
                            post=post,
                            next_title=next_title,
                            prev_title=prev_title,
-                           first_title=first_title)
+                           first_title=first_title,
+                           user=session.get('user'))
 
 @BLUEPRINT_BLOG.route('/all')
 def view_all_posts():
     """Displays all posts in one page."""
     #TODO: Make functional
 
+    # TODO: Implement
     return render_template("all_posts.html")
 
 @BLUEPRINT_BLOG.route('/create_post', methods=['GET', 'POST'])
@@ -68,7 +85,7 @@ def post_creator():
     """
 
     if 'user' not in session:
-        return redirect(url_for('login.view_login', route='blog.create_post'))
+        return redirect(url_for('login.view_login', route='blog.post_creator'))
 
     if request.method == 'POST':
         add_post(request.form['title'], request.form['content'])

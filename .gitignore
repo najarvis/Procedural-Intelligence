@@ -1,7 +1,12 @@
 procintenv/
 __pycache__
-static/images/*
+static/images/
 tests/*
-.vscode/
-codes.json
+blueprints/blog/posts/
 ips.json
+codes.json
+data/
+capture_dbs/
+db.json
+blueprints/game/pacmanjs-e/
+.vscode/
