@@ -38,6 +38,9 @@
             }
         </style>
 
+        {% block addlhead %}
+        {% endblock %}
+
     </head>
     {% endblock %}
     <body class="colorA">
@@ -89,6 +92,7 @@
                 </div> <!-- End blog main -->
                 {% endblock %}
 
+                {% block include_sidebar %}
                 <div class="col-sm-4 blog-sidebar">
                     {% block sidebar %}
 
@@ -97,13 +101,16 @@
                         <p>My name is Nick Jarvis and I am a fan of artificial intelligence, web development, game development, and running.</p>
                     </div>
 
-                    <div class="sidebar-module hidden-xs"> <!-- Twitter -->
+                    <!-- Twitter (No longer in use)
+                    <div class="sidebar-module hidden-xs"> 
                         <a class="twitter-timeline" data-theme="dark" data-tweet-limit="5" data-link-color="#19CF86" href="https://twitter.com/runningsfunning">Tweets by runningsfunning</a>
                         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
+                    -->
 
                     {% endblock %}
                 </div> <!-- End sidebar -->
+                {% endblock %}
 	    	</div>	<!-- End row -->
 
     	</div> <!-- End container -->
@@ -113,4 +120,6 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     </body>
+    {% block scripts %}
+    {% endblock %}
 </html>
