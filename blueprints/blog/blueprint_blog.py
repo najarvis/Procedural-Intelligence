@@ -52,7 +52,7 @@ def view_post(title=None):
     post = post_table.get(Query().post_number == post_num)
     prev_title, next_title = get_surrounding_titles(post_num)
 
-    first_title = url_for('blog.view_post', {title: get_first_post()})
+    first_title = url_for('blog.view_post', title=get_first_post())
 
     try:
         if post is not None:
