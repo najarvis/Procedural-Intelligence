@@ -1,4 +1,10 @@
 procintenv/
 __pycache__
-static/images/*
+static/images/
 tests/*
+blueprints/blog/posts/
+ips.json
+codes.json
+data/
+capture_dbs/
+db.json

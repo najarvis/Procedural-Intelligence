@@ -95,3 +95,27 @@ def reset_ips():
     db = TinyDB('ips.json')
     db.purge_table('_default')
     return jsonify({"status": "success"})
+
+@BLUEPRINT_DATA.route('/upload-plant-data', methods=['POST'])
+def upload_plant_data():
+    data = request.get_json(force=True)
+    if 'test' not in data:
+        return jsonify({"status": "error", "reason": "Payload must have the field: 'test'"})
+
+    with open('data/test_data.txt', 'a') as f:
+        f.write("{}\n".format(data['test']))
+
+    return jsonify({"status": "success"})
+
+@BLUEPRINT_DATA.route('/get-plant-data-raw', methods=['GET'])
+def get_raw_plant_data():
+    with open('data/test_data.txt') as f:
+        data = f.read()
+        to_send = [[i, float(v)] for i, v in enumerate(data.split('\n')[-25:]) if v != ""]
+
+    # Return the last 100 lines
+    return jsonify({"status": "success", "data": to_send})
+
+@BLUEPRINT_DATA.route('/get-plant-data', methods=['GET'])
+def get_plant_data():
+    return render_template("plant_data.html")

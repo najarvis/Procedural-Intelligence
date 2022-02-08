@@ -2,12 +2,44 @@
 {% block title %}Blog - {{ post['title'] }}{% endblock %}
 
 {% block content %}
+    {% if user is not none %}
+    <!-- Delete this post --!>
+    <p>You are logged in with permissions, {{ user }}. If you believe you are
+    seeing this in error, please contact me at <a href="mailto:najarvis2016@gmail.com">najarvis2016@gmail.com</a></p>
+    <form method="post">
+        <input name="post_title" value="{{post['title']}}">
+        <input type="submit" value="DELETE POST">
+    </form>
+    {% endif %}
+
+    <!-- Main post --!>
     <h2 class="blog-post-title">{{ post['title'] }}</h2>
     <p class="blog-post-meta">Posted on: {{ post['date'] }}</p>
 
     {% for paragraph in post['content'] %}
         <p>{{ paragraph | safe }}</p>
     {% endfor %}
+
+    <!-- Comment section --!>
+    <!--
+    <div class="row comments">
+        <strong>This comments field is under construction and does not work, do not use (yet) -Nick</strong>
+        <form method="post" name="comment">
+            <div class="row">
+                <label for="comment_name">Name:</label> <br />
+                <input type="text" name="comment_name" class="col-sm-6"/>
+            </div>
+            <div class="row">
+                <label for="comment_text">Comment:</label><br/>
+                <textarea name="comment_text" rows="5" class="col-sm-12">Add your comment here
+                </textarea>
+            </div>
+            <input type="submit" value="Submit Comment" />
+        </form>
+    </div>
+    --!>
+
+    <!-- Previous / Next posts --!>
     <div class="row">
         {% if prev_title is not none %}
         <div class="col-sm-4 hidden-xs">
