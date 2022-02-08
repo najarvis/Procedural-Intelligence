@@ -1,5 +1,6 @@
 """Handles the blog functionality of the website."""
 
+from cmath import inf
 import os
 import datetime
 from flask import Blueprint, render_template, request, session, url_for, redirect
@@ -36,6 +37,8 @@ def view_post(title=None):
     post = post_table.get(Query().post_number == post_num)
     prev_title, next_title = get_surrounding_titles(post_num)
 
+    first_title = get_first_post()
+
     try:
         if post is not None:
             file_path = BLUEPRINT_BLOG.root_path + "/posts/" + post['filename']
@@ -49,11 +52,13 @@ def view_post(title=None):
     return render_template("blog.html",
                            post=post,
                            next_title=next_title,
-                           prev_title=prev_title)
+                           prev_title=prev_title,
+                           first_title=first_title)
 
 @BLUEPRINT_BLOG.route('/all')
 def view_all_posts():
     """Displays all posts in one page."""
+    #TODO: Make functional
 
     return render_template("all_posts.html")
 
@@ -173,3 +178,12 @@ def get_surrounding_titles(post_num: int):
     next_title = get_post_title(post_num+1)
 
     return (prev_title, next_title)
+
+def get_first_post() -> str:
+    db = TinyDB('db.json')
+    post_table = db.table('posts')
+
+    post_num = min([post.get('post_number', inf) for post in post_table.all()])
+    title = get_post_title(post_num)
+
+    return title

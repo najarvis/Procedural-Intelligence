@@ -66,7 +66,7 @@
             function reset() {
                 ITERATION_NUMBER = 0;
                 ROTATION_SPEED = randRange(Math.PI * 5, Math.PI * 7);
-                ROTATION_TIME = randRange(4, 6);
+                ROTATION_TIME = randRange(4, 6); // rotate between 4-6 seconds.
             }
 
             // Gets the number of elapased seconds. 
@@ -85,13 +85,13 @@
                 return lower + (higher - lower) * Math.random();
             }
 
-            // Main game loop. 
-            function gameLoop() {
-                // ctx.arc(x, y, r, startAngle, endAngle)
-                for (let i = 0; i < NUM_PIECES; i++) {
-                    let startAngle = ANGLE_PER_PIECE * i + OFFSET_ANGLE;
-                    let endAngle = ANGLE_PER_PIECE * (i + 1) + OFFSET_ANGLE;
-                    let color = COLORS[i];
+            function rotateAround(p1_x, p1_y, pivot_x, pivot_y, angle) {
+                let mat = new DOMMatrix();
+                mat.rotateSelf(0, 0, angle);
+            }
+
+            function drawSlice(startAngle, endAngle, number) {
+                    let color = COLORS[number];
 
                     // Draw slice
                     ctx.beginPath();
@@ -102,6 +102,15 @@
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();
+            }
+
+            // Main game loop. 
+            function gameLoop() {
+                // ctx.arc(x, y, r, startAngle, endAngle)
+                for (let i = 0; i < NUM_PIECES; i++) {
+                    let startAngle = ANGLE_PER_PIECE * i + OFFSET_ANGLE;
+                    let endAngle = ANGLE_PER_PIECE * (i + 1) + OFFSET_ANGLE;
+                    drawSlice(startAngle, endAngle, i);
                 }
                 ctx.beginPath();
                 ctx.arc(CENTER_X, CENTER_Y, RADIUS * 0.1, 0, 2 * Math.PI);
