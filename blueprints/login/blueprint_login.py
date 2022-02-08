@@ -25,7 +25,7 @@ def view_login(route=None):
             session['user'] = request.form['username'].lower()
 
             if route is None:
-                return redirect(url_for('about'))
+                return redirect(url_for('default'))
 
             return redirect(url_for(route))
 
