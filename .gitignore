@@ -2,3 +2,6 @@ procintenv/
 __pycache__
 static/images/*
 tests/*
+.vscode/
+codes.json
+ips.json
